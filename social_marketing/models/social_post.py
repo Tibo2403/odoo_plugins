@@ -5,7 +5,6 @@ from odoo import models, fields
 
 _logger = logging.getLogger(__name__)
 
-
 class SocialPost(models.Model):
     _name = 'social.marketing.post'
     _description = 'Scheduled Social Post'
