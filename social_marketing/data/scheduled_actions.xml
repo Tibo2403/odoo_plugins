@@ -1,0 +1,10 @@
+<odoo>
+    <record id="ir_cron_social_post" model="ir.cron">
+        <field name="name">Process Scheduled Social Posts</field>
+        <field name="model_id" ref="model_social_marketing_post"/>
+        <field name="state">code</field>
+        <field name="code">model.run_scheduled_posts()</field>
+        <field name="interval_number">5</field>
+        <field name="interval_type">minutes</field>
+    </record>
+</odoo>
