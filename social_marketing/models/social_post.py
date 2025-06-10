@@ -1,6 +1,6 @@
 import logging
 
-from odoo import models, fields
+from odoo import models, fields, api
 
 
 _logger = logging.getLogger(__name__)
@@ -32,6 +32,7 @@ class SocialPost(models.Model):
                 post.stats_clicks += 1
                 _logger.info("Post %s published", post.id)
 
+    @api.model
     def run_scheduled_posts(self):
         posts = self.search([
             ('state', '=', 'scheduled'),
