@@ -15,6 +15,12 @@ class _DatetimeField(_Field):
     def now():
         return datetime.datetime.now()
 
+
+class _DateField(_Field):
+    @staticmethod
+    def today():
+        return datetime.date.today()
+
 # Champs typés pour compatibilité avec Odoo
 class Char(_Field): pass
 class Many2one(_Field): pass
@@ -22,6 +28,9 @@ class Text(_Field): pass
 class Selection(_Field): pass
 class Integer(_Field): pass
 class Boolean(_Field): pass
+class Float(_Field): pass
+class Many2many(_Field): pass
+class One2many(_Field): pass
 
 # Enveloppe fields
 fields_mod = types.ModuleType('odoo.fields')
@@ -32,10 +41,29 @@ fields_mod.Selection = Selection
 fields_mod.Integer = Integer
 fields_mod.Boolean = Boolean
 fields_mod.Datetime = _DatetimeField
+fields_mod.Date = _DateField
+fields_mod.Float = Float
+fields_mod.Many2many = Many2many
+fields_mod.One2many = One2many
 
 # Décorateurs API simulés
 api_mod = types.ModuleType('odoo.api')
 api_mod.model = lambda f: f
+
+
+def _store_args(attr):
+    def decorator(*fields):
+        def wrapper(func):
+            setattr(func, attr, fields)
+            return func
+        return wrapper
+    return decorator
+
+
+api_mod.depends = _store_args('_depends')
+api_mod.onchange = _store_args('_onchange')
+api_mod.constrains = _store_args('_constrains')
+api_mod.model_create_multi = lambda f: f
 
 # RecordSet simulé (comme un ORM Odoo)
 class RecordSet(list):
