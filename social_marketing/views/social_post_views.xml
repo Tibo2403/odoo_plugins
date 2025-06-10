@@ -24,6 +24,7 @@
                         <field name="content"/>
                         <field name="scheduled_date"/>
                         <field name="state"/>
+                        <button string="Post Now" type="object" name="post_now" states="draft,scheduled" class="btn-primary"/>
                     </group>
                     <group string="Statistics">
                         <field name="stats_impressions"/>
