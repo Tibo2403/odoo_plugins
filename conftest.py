@@ -1,6 +1,7 @@
 import sys
 import types
 import datetime
+import pytest
 
 # Crée un module simulé "odoo"
 odoo = types.ModuleType('odoo')
@@ -119,3 +120,12 @@ sys.modules.setdefault('odoo', odoo)
 sys.modules.setdefault('odoo.models', models_mod)
 sys.modules.setdefault('odoo.fields', fields_mod)
 sys.modules.setdefault('odoo.api', api_mod)
+
+
+@pytest.fixture
+def social_post_class():
+    import importlib
+    from social_marketing.models import social_post
+    importlib.reload(social_post)
+    social_post.SocialPost._registry = []
+    return social_post.SocialPost
