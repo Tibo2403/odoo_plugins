@@ -26,3 +26,10 @@ These addons target **Odoo&nbsp;16**, as specified in each `__manifest__.py` fil
    ```bash
    pytest
    ```
+
+### Test Environment
+
+The `conftest.py` file provides mocked versions of `odoo.models`,
+`odoo.fields` and related modules. This lightweight stub allows the addons to
+be imported and tested without requiring a real Odoo server. Tests execute
+entirely with the simulated environment created in this file.
