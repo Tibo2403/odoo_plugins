@@ -20,7 +20,7 @@
                     <group>
                         <field name="name"/>
                         <field name="platform"/>
-                        <field name="access_token"/>
+                        <field name="access_token" password="True"/>
                         <field name="active"/>
                     </group>
                 </sheet>
