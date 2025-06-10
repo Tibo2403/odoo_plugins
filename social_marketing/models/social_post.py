@@ -36,10 +36,22 @@ class SocialPost(models.Model):
 
     @api.model
     def run_scheduled_posts(self):
-        posts = self.search([
+        domain = [
             ('state', '=', 'scheduled'),
             ('scheduled_date', '<=', fields.Datetime.now()),
-            ('company_id', '=', self.env.company.id)
-        ])
-        posts.post_now()
+        ]
+        if getattr(self, 'env', None):
+            domain.append(('company_id', '=', self.env.company.id))
+
+        posts = self.search(domain)
+
+        if hasattr(posts, 'post_now'):
+            posts.post_now()
+        else:
+            now = fields.Datetime.now()
+            filtered = [
+                p for p in posts
+                if p.state == 'scheduled' and p.scheduled_date <= now
+            ]
+            self.__class__.post_now(filtered)
 
