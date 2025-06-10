@@ -34,3 +34,27 @@ The `conftest.py` file provides mocked versions of `odoo.models`,
 `odoo.fields` and related modules. This lightweight stub allows the addons to
 be imported and tested without requiring a real Odoo server. Tests execute
 entirely with the simulated environment created in this file.
+
+### Extending `conftest.py`
+
+Developers can enhance the stub Odoo environment by editing
+[`conftest.py`](conftest.py). New field classes or API decorators can be added
+to emulate additional framework features that your addons rely on. Extend the
+`_Field` base class to create new field types or introduce new decorators under
+`odoo.api` as needed.
+
+Example: adding a floating‑point field and a simple decorator::
+
+    class Float(_Field):
+        pass
+
+    fields_mod.Float = Float
+
+    def compute(func):
+        func._compute = True
+        return func
+
+    api_mod.compute = compute
+
+After modifying the stub, run `pytest` locally to ensure the addons and tests
+still behave correctly with the new behavior.
