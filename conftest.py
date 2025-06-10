@@ -8,6 +8,7 @@ models_mod = types.ModuleType('odoo.models')
 class Model:
     pass
 models_mod.Model = Model
+Model.env = types.SimpleNamespace(company=types.SimpleNamespace(id=1))
 
 fields_mod = types.ModuleType('odoo.fields')
 class _Field:
