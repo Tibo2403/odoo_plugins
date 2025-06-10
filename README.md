@@ -4,6 +4,7 @@ This repository contains example Odoo addons.
 
 - `base_plugin`: Minimal plugin demonstrating the basic structure of an Odoo module.
 - `social_marketing`: Example plugin for managing social media accounts and posts with scheduling and basic tracking.
+- Make sure the scheduled action defined in [`social_marketing/data/scheduled_actions.xml`](social_marketing/data/scheduled_actions.xml) is enabled so scheduled posts are processed automatically.
 
 ## Installation
 
@@ -11,7 +12,7 @@ This repository contains example Odoo addons.
 2. Update the Apps list inside Odoo.
 3. Install the desired addon from the Apps menu.
 
-These addons target **Odoo&nbsp;16**, as specified in each `__manifest__.py` file.
+These addons require **Odoo&nbsp;16** for compatibility. See [`social_marketing/__manifest__.py`](social_marketing/__manifest__.py) for additional module metadata.
 
 ## Running tests
 
