@@ -1,17 +1,4 @@
 import datetime
-import importlib
-
-import pytest
-
-
-@pytest.fixture(autouse=True)
-def social_post_class():
-    """Reload SocialPost and reset its registry for each test."""
-    from social_marketing.models import social_post
-    importlib.reload(social_post)
-    social_post.SocialPost._registry = []
-    social_post.models.Model._id_seq = 1
-    return social_post.SocialPost
 
 
 def test_run_scheduled_posts_posts_due_items(social_post_class, monkeypatch):
@@ -58,10 +45,8 @@ def test_run_scheduled_posts_ignores_future_items(social_post_class, monkeypatch
     assert post.stats_clicks == 0
 
 
-def test_post_now_updates_states_and_counters():
-    from social_marketing.models import social_post
-    importlib.reload(social_post)
-    SocialPost = social_post.SocialPost
+def test_post_now_updates_states_and_counters(social_post_class):
+    SocialPost = social_post_class
 
     draft = SocialPost(
         name='draft',
