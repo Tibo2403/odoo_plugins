@@ -36,6 +36,14 @@ class SocialPost(models.Model):
 
     @api.model
     def run_scheduled_posts(self):
+        """Publish posts whose schedule is due.
+
+        The search domain selects posts in ``scheduled`` state with a
+        ``scheduled_date`` up to the current time. When executed in a real
+        Odoo environment, the domain is further restricted to the current
+        company. All matching records are then published via
+        :meth:`post_now`.
+        """
         domain = [
             ('state', '=', 'scheduled'),
             ('scheduled_date', '<=', fields.Datetime.now()),
