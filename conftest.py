@@ -128,4 +128,5 @@ def social_post_class():
     from social_marketing.models import social_post
     importlib.reload(social_post)
     social_post.SocialPost._registry = []
+    social_post.models.Model._id_seq = 1
     return social_post.SocialPost
