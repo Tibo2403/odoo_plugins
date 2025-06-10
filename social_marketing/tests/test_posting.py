@@ -92,3 +92,39 @@ def test_run_scheduled_posts_ignores_future_items(monkeypatch):
     assert post.state == 'scheduled'
     assert post.stats_impressions == 0
     assert post.stats_clicks == 0
+
+
+def test_post_now_transitions_states_and_updates_stats():
+    from social_marketing.models import social_post
+    importlib.reload(social_post)
+    SocialPost = social_post.SocialPost
+
+    draft = SocialPost(
+        name='draft',
+        account_id=None,
+        content='post 1',
+        state='draft',
+        scheduled_date=datetime.datetime.now(),
+        stats_impressions=0,
+        stats_clicks=0,
+    )
+
+    scheduled = SocialPost(
+        name='scheduled',
+        account_id=None,
+        content='post 2',
+        state='scheduled',
+        scheduled_date=datetime.datetime.now(),
+        stats_impressions=1,
+        stats_clicks=2,
+    )
+
+    SocialPost.post_now([draft, scheduled])
+
+    assert draft.state == 'posted'
+    assert draft.stats_impressions == 1
+    assert draft.stats_clicks == 1
+
+    assert scheduled.state == 'posted'
+    assert scheduled.stats_impressions == 2
+    assert scheduled.stats_clicks == 3
