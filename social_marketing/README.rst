@@ -47,3 +47,27 @@ Required Permissions
 Only members of the *Social Marketing Manager* group can configure accounts
 and schedule posts. Read access to published content is granted to all internal
 users.
+
+Connecting to a Real Platform
+-----------------------------
+
+This module ships with stub methods for posting content. To integrate with an
+actual platform API you would typically perform an HTTP request to the
+platform's endpoint. A simplified example using ``requests`` is shown below::
+
+    import requests
+
+    API_ENDPOINT = "https://api.example.com/v1/post"  # Replace with real URL
+    ACCESS_TOKEN = "YOUR_TOKEN"                        # Load from a safe place
+
+    def send_post(message: str):
+        headers = {"Authorization": f"Bearer {ACCESS_TOKEN}"}
+        payload = {"text": message}
+        response = requests.post(API_ENDPOINT, json=payload, headers=headers)
+        response.raise_for_status()
+
+The ``ACCESS_TOKEN`` and ``API_ENDPOINT`` values above are placeholders. When
+implementing your own integration, ensure that credentials are stored securely
+in environment variables or Odoo's system parameters rather than committed to
+version control. Consider limiting access to these values so they are only
+visible to the server running Odoo.
