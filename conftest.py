@@ -37,7 +37,7 @@ fields_mod.Datetime = _DatetimeField
 api_mod = types.ModuleType('odoo.api')
 api_mod.model = lambda f: f
 
-# RecordSet simulé (comme un ORM)
+# RecordSet simulé (comme un ORM Odoo)
 class RecordSet(list):
     def __getattr__(self, item):
         def wrapper(*args, **kwargs):
@@ -47,10 +47,11 @@ class RecordSet(list):
             return method(self, *args, **kwargs)
         return wrapper
 
-# Classe Model simulée avec registre
+# Classe Model simulée avec registre et environnement simulé
 class Model:
     _registry = []
     _id_seq = 1
+    env = types.SimpleNamespace(company=types.SimpleNamespace(id=1))  # simulate self.env.company.id
 
     def __init__(self, **vals):
         self.id = Model._id_seq
@@ -72,7 +73,6 @@ class Model:
                 if op == '<=' and val > value:
                     match = False
                     break
-                # Tu peux ajouter d'autres opérateurs ici
             if match:
                 res.append(rec)
         return RecordSet(res)
@@ -81,7 +81,7 @@ class Model:
 models_mod = types.ModuleType('odoo.models')
 models_mod.Model = Model
 
-# Assemble le module "odoo"
+# Assemble le module odoo
 odoo.models = models_mod
 odoo.fields = fields_mod
 odoo.api = api_mod
