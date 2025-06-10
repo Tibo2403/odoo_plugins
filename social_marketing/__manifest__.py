@@ -7,7 +7,9 @@
     'category': 'Marketing',
     'depends': ['base'],
     'data': [
+        'security/social_marketing_security.xml',
         'security/ir.model.access.csv',
+        'data/scheduled_actions.xml',
         'views/social_account_views.xml',
         'views/social_post_views.xml',
     ],
