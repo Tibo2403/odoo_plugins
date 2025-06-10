@@ -90,4 +90,5 @@ def test_run_scheduled_posts_ignores_future_items(monkeypatch):
     SocialPost().run_scheduled_posts()
 
     assert post.state == 'scheduled'
-    assert post.stats_i_
+    assert post.stats_impressions == 0
+    assert post.stats_clicks == 0
