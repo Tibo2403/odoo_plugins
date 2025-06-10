@@ -14,3 +14,5 @@ class SocialAccount(models.Model):
     ], required=True)
     access_token = fields.Char(string='Access Token')
     active = fields.Boolean(default=True)
+    company_id = fields.Many2one('res.company', required=True,
+                                 default=lambda self: self.env.company)

@@ -12,4 +12,16 @@
         <field name="name">Social Marketing Analyst</field>
         <field name="category_id" ref="base.module_category_marketing"/>
     </record>
+    <record id="social_account_rule_company" model="ir.rule">
+        <field name="name">Social Account multi-company</field>
+        <field name="model_id" ref="model_social_marketing_account"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', user.company_ids.ids)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    <record id="social_post_rule_company" model="ir.rule">
+        <field name="name">Social Post multi-company</field>
+        <field name="model_id" ref="model_social_marketing_post"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', user.company_ids.ids)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
 </odoo>

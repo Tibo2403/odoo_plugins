@@ -8,6 +8,7 @@
                 <field name="name"/>
                 <field name="platform"/>
                 <field name="active"/>
+                <field name="company_id"/>
             </tree>
         </field>
     </record>
@@ -22,6 +23,7 @@
                         <field name="platform"/>
                         <field name="access_token"/>
                         <field name="active"/>
+                        <field name="company_id"/>
                     </group>
                 </sheet>
             </form>
