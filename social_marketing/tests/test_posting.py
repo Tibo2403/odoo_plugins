@@ -1,16 +1,16 @@
-import sys
-import types
 import datetime
+import types
 import importlib
+import sys
+
+import pytest
 
 
 def setup_module(module):
-    """Provide minimal odoo stubs for importing the addon."""
-    # create base odoo modules
+    """Stub minimal des modules Odoo pour exécuter les tests."""
     odoo = types.ModuleType('odoo')
     models_mod = types.ModuleType('odoo.models')
-    class Model:
-        pass
+    class Model: pass
     models_mod.Model = Model
 
     fields_mod = types.ModuleType('odoo.fields')
@@ -26,9 +26,7 @@ def setup_module(module):
     fields_mod.Datetime = _Datetime
 
     api_mod = types.ModuleType('odoo.api')
-    def model(func):
-        return func
-    api_mod.model = model
+    api_mod.model = lambda func: func
 
     odoo.models = models_mod
     odoo.fields = fields_mod
@@ -39,30 +37,58 @@ def setup_module(module):
     sys.modules.setdefault('odoo.fields', fields_mod)
     sys.modules.setdefault('odoo.api', api_mod)
 
-    # reload the module under test to apply stubs
     importlib.invalidate_caches()
 
 
-def test_run_scheduled_posts(monkeypatch):
+@pytest.fixture(autouse=True)
+def reset_registry():
+    from social_marketing.models import social_post
+    social_post.SocialPost._registry = []
+
+
+def test_run_scheduled_posts_posts_due_items(monkeypatch):
     from social_marketing.models import social_post
     importlib.reload(social_post)
     SocialPost = social_post.SocialPost
 
-    post = types.SimpleNamespace(
-        state='scheduled',
+    post = SocialPost(
+        name='test',
+        account_id=None,
+        content='demo',
         scheduled_date=datetime.datetime.now() - datetime.timedelta(hours=1),
+        state='scheduled',
         stats_impressions=0,
         stats_clicks=0,
-        id=1,
     )
 
-    recordset = type('Recordset', (list,), {})([post])
-    recordset.post_now = SocialPost.post_now.__get__(recordset, type(recordset))
-
-    monkeypatch.setattr(SocialPost, 'search', lambda self, domain: recordset, raising=False)
+    monkeypatch.setattr(SocialPost, 'search', lambda self, domain: [post], raising=False)
 
     SocialPost().run_scheduled_posts()
 
     assert post.state == 'posted'
     assert post.stats_impressions == 1
     assert post.stats_clicks == 1
+
+
+def test_run_scheduled_posts_ignores_future_items(monkeypatch):
+    from social_marketing.models import social_post
+    importlib.reload(social_post)
+    SocialPost = social_post.SocialPost
+
+    post = SocialPost(
+        name='future',
+        account_id=None,
+        content='later',
+        scheduled_date=datetime.datetime.now() + datetime.timedelta(hours=1),
+        state='scheduled',
+        stats_impressions=0,
+        stats_clicks=0,
+    )
+
+    monkeypatch.setattr(SocialPost, 'search', lambda self, domain: [post], raising=False)
+
+    SocialPost().run_scheduled_posts()
+
+    assert post.state == 'scheduled'
+    assert post.stats_impressions == 0
+    assert post.stats_clicks == 0
