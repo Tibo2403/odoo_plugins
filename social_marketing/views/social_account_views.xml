@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_social_account_tree" model="ir.ui.view">
+        <field name="name">social.marketing.account.tree</field>
+        <field name="model">social.marketing.account</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="platform"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_social_account_form" model="ir.ui.view">
+        <field name="name">social.marketing.account.form</field>
+        <field name="model">social.marketing.account</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="platform"/>
+                        <field name="access_token"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <menuitem id="social_marketing_menu" name="Social Marketing"/>
+    <menuitem id="social_account_menu_root" name="Accounts" parent="social_marketing_menu"/>
+    <record id="action_social_account" model="ir.actions.act_window">
+        <field name="name">Social Accounts</field>
+        <field name="res_model">social.marketing.account</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_social_account" name="Social Accounts" parent="social_account_menu_root" action="action_social_account"/>
+</odoo>
