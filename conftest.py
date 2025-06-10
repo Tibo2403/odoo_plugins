@@ -2,29 +2,42 @@ import sys
 import types
 import datetime
 
+# Crée un module simulé "odoo"
 odoo = types.ModuleType('odoo')
 
+# Champs simulés
 class _Field:
     def __init__(self, *args, **kwargs):
         pass
 
-class _DateTimeField:
-    def __init__(self, *args, **kwargs):
-        pass
-
+class _DatetimeField(_Field):
     @staticmethod
     def now():
         return datetime.datetime.now()
 
-class _Fields(types.SimpleNamespace):
-    Char = _Field
-    Many2one = _Field
-    Text = _Field
-    Selection = _Field
-    Boolean = _Field
-    Datetime = _DateTimeField
-    Integer = _Field
+# Champs typés pour compatibilité avec Odoo
+class Char(_Field): pass
+class Many2one(_Field): pass
+class Text(_Field): pass
+class Selection(_Field): pass
+class Integer(_Field): pass
+class Boolean(_Field): pass
 
+# Enveloppe fields
+fields_mod = types.ModuleType('odoo.fields')
+fields_mod.Char = Char
+fields_mod.Many2one = Many2one
+fields_mod.Text = Text
+fields_mod.Selection = Selection
+fields_mod.Integer = Integer
+fields_mod.Boolean = Boolean
+fields_mod.Datetime = _DatetimeField
+
+# Décorateurs API simulés
+api_mod = types.ModuleType('odoo.api')
+api_mod.model = lambda f: f
+
+# RecordSet simulé (comme un ORM)
 class RecordSet(list):
     def __getattr__(self, item):
         def wrapper(*args, **kwargs):
@@ -34,6 +47,7 @@ class RecordSet(list):
             return method(self, *args, **kwargs)
         return wrapper
 
+# Classe Model simulée avec registre
 class Model:
     _registry = []
     _id_seq = 1
@@ -58,17 +72,22 @@ class Model:
                 if op == '<=' and val > value:
                     match = False
                     break
+                # Tu peux ajouter d'autres opérateurs ici
             if match:
                 res.append(rec)
         return RecordSet(res)
 
-api = types.SimpleNamespace(model=lambda f: f)
+# Modules simulés
+models_mod = types.ModuleType('odoo.models')
+models_mod.Model = Model
 
-odoo.models = types.SimpleNamespace(Model=Model)
-odoo.fields = _Fields()
-odoo.api = api
+# Assemble le module "odoo"
+odoo.models = models_mod
+odoo.fields = fields_mod
+odoo.api = api_mod
 
+# Injection dans sys.modules
 sys.modules.setdefault('odoo', odoo)
-sys.modules.setdefault('odoo.models', odoo.models)
-sys.modules.setdefault('odoo.fields', odoo.fields)
-sys.modules.setdefault('odoo.api', odoo.api)
+sys.modules.setdefault('odoo.models', models_mod)
+sys.modules.setdefault('odoo.fields', fields_mod)
+sys.modules.setdefault('odoo.api', api_mod)

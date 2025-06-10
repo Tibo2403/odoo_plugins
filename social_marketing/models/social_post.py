@@ -21,6 +21,8 @@ class SocialPost(models.Model):
     ], default='draft')
     stats_impressions = fields.Integer(string='Impressions')
     stats_clicks = fields.Integer(string='Clicks')
+    company_id = fields.Many2one('res.company', required=True,
+                                 default=lambda self: self.env.company)
 
     def post_now(self):
         """Post the content immediately and update statistics."""
@@ -36,7 +38,8 @@ class SocialPost(models.Model):
     def run_scheduled_posts(self):
         posts = self.search([
             ('state', '=', 'scheduled'),
-            ('scheduled_date', '<=', fields.Datetime.now())
+            ('scheduled_date', '<=', fields.Datetime.now()),
+            ('company_id', '=', self.env.company.id)
         ])
         posts.post_now()
 
