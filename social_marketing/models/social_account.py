@@ -12,5 +12,5 @@ class SocialAccount(models.Model):
         ('linkedin', 'LinkedIn'),
         ('twitter', 'X/Twitter')
     ], required=True)
-    access_token = fields.Char(string='Access Token')
+    access_token = fields.Char(string='Access Token', password=True)
     active = fields.Boolean(default=True)
