@@ -130,3 +130,13 @@ def social_post_class():
     social_post.SocialPost._registry = []
     social_post.models.Model._id_seq = 1
     return social_post.SocialPost
+
+
+@pytest.fixture
+def account_move_class():
+    import importlib
+    from account_anomaly.models import account_move
+    importlib.reload(account_move)
+    account_move.AccountMove._registry = []
+    account_move.models.Model._id_seq = 1
+    return account_move.AccountMove

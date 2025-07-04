@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_account_move_tree" model="ir.ui.view">
+        <field name="name">account.anomaly.move.tree</field>
+        <field name="model">account.anomaly.move</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="amount"/>
+                <field name="is_anomaly"/>
+                <field name="date"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_account_move_form" model="ir.ui.view">
+        <field name="name">account.anomaly.move.form</field>
+        <field name="model">account.anomaly.move</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="amount"/>
+                        <field name="date"/>
+                        <field name="is_anomaly"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <menuitem id="account_anomaly_menu" name="Accounting Anomaly"/>
+    <menuitem id="account_anomaly_menu_root" name="Moves" parent="account_anomaly_menu"/>
+    <record id="action_account_move" model="ir.actions.act_window">
+        <field name="name">Accounting Moves</field>
+        <field name="res_model">account.anomaly.move</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_account_move" name="Moves" parent="account_anomaly_menu_root" action="action_account_move"/>
+</odoo>
