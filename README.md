@@ -8,6 +8,10 @@ This repository contains example Odoo addons.
 - `l10n_be_fiscal_full`: Starter module for Belgian fiscal declarations.
 - Make sure the scheduled action defined in [`social_marketing/data/scheduled_actions.xml`](social_marketing/data/scheduled_actions.xml) is enabled so scheduled posts are processed automatically.
 
+## User Manual
+
+For detailed installation and usage instructions, see the [user manual](docs/user_manual.md).
+
 ## Installation
 
 1. Copy the addon directories (e.g. `base_plugin`, `social_marketing`, `account_anomaly`) into your Odoo `addons_path`.
