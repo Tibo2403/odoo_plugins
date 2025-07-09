@@ -140,3 +140,13 @@ def account_move_class():
     account_move.AccountMove._registry = []
     account_move.models.Model._id_seq = 1
     return account_move.AccountMove
+
+
+@pytest.fixture
+def fiscal_declaration_class():
+    import importlib
+    from l10n_be_fiscal_full.models import declaration
+    importlib.reload(declaration)
+    declaration.FiscalDeclaration._registry = []
+    declaration.models.Model._id_seq = 1
+    return declaration.FiscalDeclaration
