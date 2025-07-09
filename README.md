@@ -33,9 +33,9 @@ These addons require **Odoo&nbsp;16** for compatibility. See [`social_marketing/
 ### Test Environment
 
 The `conftest.py` file provides mocked versions of `odoo.models`,
-`odoo.fields` and related modules. This lightweight stub allows the addons to
-be imported and tested without requiring a real Odoo server. Tests execute
-entirely with the simulated environment created in this file.
+`odoo.fields` and related modules. This fake Odoo environment allows the addons
+to be imported and tested without requiring a real Odoo server. Tests execute
+entirely within this simulated setup.
 
 ### Extending `conftest.py`
 
@@ -60,3 +60,7 @@ Example: adding a floating‑point field and a simple decorator::
 
 After modifying the stub, run `pytest` locally to ensure the addons and tests
 still behave correctly with the new behavior.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
