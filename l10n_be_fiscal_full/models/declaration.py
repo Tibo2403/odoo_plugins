@@ -19,6 +19,9 @@ class FiscalDeclaration(models.Model):
         ('exported', 'Exported')
     ], default='draft')
     xml_content = fields.Text(string='XML Content')
+    belcotax_line_ids = fields.One2many(
+        'belcotax.declaration.line', 'declaration_id', string='Belcotax Lines'
+    )
 
     def _iterate(self):
         """Return a list of records for uniform iteration."""
@@ -27,9 +30,24 @@ class FiscalDeclaration(models.Model):
     def generate_xml(self):
         """Generate a very basic XML representation for the declaration."""
         for rec in self._iterate():
-            rec.xml_content = (
-                f"<declaration type='{rec.declaration_type}' name='{rec.name}'/>"
-            )
+            if rec.declaration_type == 'belcotax':
+                lines_xml = ''
+                for line in getattr(rec, 'belcotax_line_ids', []):
+                    vat = line.get_partner_vat()
+                    addr = line.get_partner_address()
+                    partner_name = getattr(line.partner_id, 'name', '')
+                    lines_xml += (
+                        f"<line partner='{partner_name}' vat='{vat}' "
+                        f"address='{addr}' amount='{line.amount}'/>"
+                    )
+                rec.xml_content = (
+                    f"<declaration type='{rec.declaration_type}' name='{rec.name}'>"
+                    f"{lines_xml}</declaration>"
+                )
+            else:
+                rec.xml_content = (
+                    f"<declaration type='{rec.declaration_type}' name='{rec.name}'/>"
+                )
             rec.state = 'ready'
         return getattr(self, 'xml_content', None)
 
