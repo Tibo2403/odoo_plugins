@@ -6,7 +6,10 @@
     'author': 'Example Author',
     'category': 'Accounting',
     'depends': ['base'],
-    'data': [],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/belcotax_views.xml',
+    ],
     'installable': True,
     'application': True,
 }
