@@ -4,12 +4,13 @@ Luxembourg Fiscal Declarations
 This addon provides a minimal skeleton for handling Luxembourg fiscal
 declarations in Odoo. It defines a single model ``lu.fiscal.declaration``
 that can represent different types of filings such as VAT returns,
-client listings and other XML exports.
+client listings and other XML exports. Basic eCDF XBRL generation is
+included for demonstration purposes.
 
 The ``generate_xml`` method creates a simplistic XML snippet while
-``export_xml`` marks the declaration as exported. The implementation is
-intended as a starting point for a complete solution that would follow
-official specifications.
+``export_xml`` marks the declaration as exported. ``generate_ecdf_xbrl``
+and ``export_ecdf`` offer a lightweight example of how an XBRL document
+for the eCDF portal could be constructed.
 
 Installation
 ------------
@@ -28,3 +29,18 @@ Create and export a simple declaration programmatically::
     })
     xml = declaration.generate_xml()
     declaration.export_xml()
+
+Generate a sample eCDF XBRL document::
+
+    import json
+    data = {
+        "1000": 1000,
+        "1010": 500,
+    }
+    declaration = self.env["lu.fiscal.declaration"].create({
+        "name": "eCDF", "declaration_type": "xbrl",
+        "xbrl_taxonomy": "lu.ecdf.test",
+        "account_data": json.dumps(data),
+    })
+    xml = declaration.generate_ecdf_xbrl()
+    declaration.export_ecdf()
