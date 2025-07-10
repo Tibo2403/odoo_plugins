@@ -18,6 +18,7 @@ class FiscalDeclaration(models.Model):
         ('ready', 'Ready'),
         ('exported', 'Exported')
     ], default='draft')
+    exported_date = fields.Date(string='Exported On')
     xml_content = fields.Text(string='XML Content')
     belcotax_line_ids = fields.One2many(
         'belcotax.declaration.line', 'declaration_id', string='Belcotax Lines'
@@ -57,4 +58,6 @@ class FiscalDeclaration(models.Model):
             if rec.state != 'ready':
                 rec.generate_xml()
             rec.state = 'exported'
+            rec.exported_date = fields.Date.today()
         return getattr(self, 'xml_content', None)
+

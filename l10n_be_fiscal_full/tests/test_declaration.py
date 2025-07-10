@@ -1,4 +1,5 @@
 import pytest
+from odoo.fields import Date
 
 
 def test_generate_xml_sets_content_and_state(fiscal_declaration_class, monkeypatch):
@@ -21,6 +22,7 @@ def test_export_xml_marks_exported(fiscal_declaration_class, monkeypatch):
 
     assert dec.state == 'exported'
     assert dec.xml_content.startswith('<declaration')
+    assert dec.exported_date == Date.today()
 
 
 def test_generate_and_export_on_list(fiscal_declaration_class):
@@ -49,3 +51,5 @@ def test_generate_and_export_on_list(fiscal_declaration_class):
     assert dec2.state == 'exported'
     assert dec1.xml_content.startswith('<declaration')
     assert dec2.xml_content.startswith('<declaration')
+    assert dec1.exported_date == Date.today()
+    assert dec2.exported_date == Date.today()
