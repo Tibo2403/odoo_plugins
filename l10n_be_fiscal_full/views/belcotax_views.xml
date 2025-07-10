@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_belcotax_declaration_tree" model="ir.ui.view">
+        <field name="name">belcotax.declaration.tree</field>
+        <field name="model">belcotax.declaration</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="fiscal_year"/>
+                <field name="form_type"/>
+                <field name="partner_id"/>
+                <field name="amount"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_belcotax_declaration_form" model="ir.ui.view">
+        <field name="name">belcotax.declaration.form</field>
+        <field name="model">belcotax.declaration</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="fiscal_year"/>
+                        <field name="form_type"/>
+                        <field name="partner_id"/>
+                        <field name="amount"/>
+                        <field name="state" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <menuitem id="belcotax_menu" name="Belcotax"/>
+
+    <record id="action_belcotax_declaration" model="ir.actions.act_window">
+        <field name="name">Belcotax Declarations</field>
+        <field name="res_model">belcotax.declaration</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_belcotax_declaration" name="Declarations"
+              parent="belcotax_menu" action="action_belcotax_declaration"/>
+</odoo>

@@ -28,3 +28,13 @@ Create and export a simple declaration programmatically::
     })
     xml = declaration.generate_xml()
     declaration.export_xml()
+
+Belcotax Submodule
+------------------
+
+The ``belcotax.declaration`` model records form 281 declarations per
+fiscal year. Use ``generate_xml`` on a record to build the XML based on
+a simplified structure. The ``export_year_form`` class method gathers all
+declarations for a given fiscal year and form type and returns the full
+XML payload. When the ``pdf_preview`` flag is passed a placeholder string
+is returned alongside the XML.
