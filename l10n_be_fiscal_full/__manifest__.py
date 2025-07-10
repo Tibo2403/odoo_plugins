@@ -6,7 +6,10 @@
     'author': 'Example Author',
     'category': 'Accounting',
     'depends': ['base'],
-    'data': [],
+    'data': [
+        'views/belcotax_wizard_views.xml',
+    ],
     'installable': True,
     'application': True,
 }
+

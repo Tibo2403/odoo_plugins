@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_belcotax_export_wizard" model="ir.ui.view">
+        <field name="name">belcotax.export.wizard.form</field>
+        <field name="model">belcotax.export.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Belcotax Export">
+                <group>
+                    <field name="fiscal_year"/>
+                    <field name="form_type"/>
+                </group>
+                <footer>
+                    <button string="Export" type="object" name="action_export" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_belcotax_export_wizard" model="ir.actions.act_window">
+        <field name="name">Belcotax Export</field>
+        <field name="res_model">belcotax.export.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_belgian_fiscal_root" name="Belgian Fiscal"/>
+    <menuitem id="menu_belcotax_export" name="Belcotax Export" parent="menu_belgian_fiscal_root" action="action_belcotax_export_wizard"/>
+</odoo>
+

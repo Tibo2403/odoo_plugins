@@ -160,3 +160,14 @@ def lu_fiscal_declaration_class():
     declaration.FiscalDeclaration._registry = []
     declaration.models.Model._id_seq = 1
     return declaration.FiscalDeclaration
+
+
+@pytest.fixture
+def belcotax_export_wizard_class():
+    import importlib
+    from l10n_be_fiscal_full.wizards import belcotax_export_wizard
+    importlib.reload(belcotax_export_wizard)
+    belcotax_export_wizard.BelcotaxExportWizard._registry = []
+    belcotax_export_wizard.models.Model._id_seq = 1
+    return belcotax_export_wizard.BelcotaxExportWizard
+

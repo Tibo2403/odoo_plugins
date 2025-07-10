@@ -18,6 +18,7 @@ class FiscalDeclaration(models.Model):
         ('ready', 'Ready'),
         ('exported', 'Exported')
     ], default='draft')
+    exported_date = fields.Date(string='Exported On')
     xml_content = fields.Text(string='XML Content')
 
     def _iterate(self):
@@ -39,4 +40,6 @@ class FiscalDeclaration(models.Model):
             if rec.state != 'ready':
                 rec.generate_xml()
             rec.state = 'exported'
+            rec.exported_date = fields.Date.today()
         return getattr(self, 'xml_content', None)
+
