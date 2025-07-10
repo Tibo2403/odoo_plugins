@@ -6,6 +6,7 @@ This repository contains example Odoo addons.
 - `social_marketing`: Example plugin for managing social media accounts and posts with scheduling and basic tracking.
 - `account_anomaly`: Simple addon for flagging unusual accounting moves.
 - `l10n_be_fiscal_full`: Starter module for Belgian fiscal declarations.
+- `l10n_lu_fiscal_full`: Starter module for Luxembourg fiscal declarations.
 - Make sure the scheduled action defined in [`social_marketing/data/scheduled_actions.xml`](social_marketing/data/scheduled_actions.xml) is enabled so scheduled posts are processed automatically.
 
 ## User Manual

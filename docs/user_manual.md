@@ -57,3 +57,15 @@ The `l10n_be_fiscal_full` addon offers a skeleton for generating Belgian fiscal 
 
 More background is provided in [l10n_be_fiscal_full/README.rst](../l10n_be_fiscal_full/README.rst).
 
+## Luxembourg Fiscal Declarations
+
+The `l10n_lu_fiscal_full` addon mirrors the Belgian example but targets Luxembourg reporting.
+
+### Usage
+
+1. Install the module and open **Luxembourg Fiscal Declarations** in the Odoo menu.
+2. Create a new declaration record specifying the declaration type.
+3. Use the provided actions to generate XML and mark the declaration as exported.
+
+See [l10n_lu_fiscal_full/README.rst](../l10n_lu_fiscal_full/README.rst) for details.
+
