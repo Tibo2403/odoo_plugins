@@ -11,6 +11,15 @@ The ``generate_xml`` method creates a simplistic XML snippet while
 intended as a starting point for a complete solution that would follow
 official specifications and integrate with Intervat, Belcotax or Biztax.
 
+Belcotax 281.x
+---------------
+
+The module now includes a basic ``belcotax.declaration`` model used by the
+export wizard. A declaration stores the fiscal year, form type and partner
+information. The wizard generates a tiny XML snippet and returns it as a
+downloadable file. This is only a demonstration of the export flow and does
+not attempt to implement the official XSD.
+
 Installation
 ------------
 

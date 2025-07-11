@@ -24,7 +24,7 @@ def test_belcotax_wizard_returns_act_url(belcotax_export_wizard_class, monkeypat
     module = __import__(Wizard.__module__, fromlist=[''])
     monkeypatch.setattr(module, 'FiscalDeclaration', DummyDeclaration)
 
-    wiz = Wizard(fiscal_year='2022', form_type='281.10')
+    wiz = Wizard(fiscal_year='2022', form_type='281.50')
     result = wiz.action_export()
 
     assert result['type'] == 'ir.actions.act_url'
