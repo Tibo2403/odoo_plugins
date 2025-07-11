@@ -6,9 +6,12 @@ declarations in Odoo. It defines a single model ``be.fiscal.declaration``
 that can represent different types of filings such as VAT returns,
 client listings, Belcotax forms, ISOC statements and XBRL exports.
 
-The ``generate_xml`` method creates a simplistic XML snippet while
-``export_xml`` marks the declaration as exported. The implementation is
-intended as a starting point for a complete solution that would follow
+The ``generate_xml`` method originally created a simplistic XML snippet
+while ``export_xml`` merely flagged the declaration as exported. The
+model now provides basic fields for common Intervat VAT codes (00, 01,
+54…), intra‑EU operations and period information. ``generate_xml``
+produces a small ``<VATDeclaration>`` document using these values.
+This remains a lightweight example; a full solution would follow the
 official specifications and integrate with Intervat, Belcotax or Biztax.
 
 BNB/CBN XBRL
@@ -42,7 +45,12 @@ Usage Example
 Create and export a simple declaration programmatically::
 
     declaration = self.env["be.fiscal.declaration"].create({
-        "name": "VAT Return",  # or any other declaration type
+        "name": "VAT Return",
+        "declaration_type": "vat",
+        "vat_code_00": 100,
+        "vat_code_01": 50,
+        "period_type": "month",
+        "period_month": "3",
     })
     xml = declaration.generate_xml()
     declaration.export_xml()
