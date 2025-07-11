@@ -8,6 +8,7 @@
     'depends': ['base'],
     'data': [
         'views/belcotax_wizard_views.xml',
+        'views/bnb_xbrl_wizard_views.xml',
     ],
     'installable': True,
     'application': True,

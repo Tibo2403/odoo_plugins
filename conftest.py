@@ -171,3 +171,13 @@ def belcotax_export_wizard_class():
     belcotax_export_wizard.models.Model._id_seq = 1
     return belcotax_export_wizard.BelcotaxExportWizard
 
+
+@pytest.fixture
+def bnb_xbrl_export_wizard_class():
+    import importlib
+    from l10n_be_fiscal_full.wizards import bnb_xbrl_export_wizard
+    importlib.reload(bnb_xbrl_export_wizard)
+    bnb_xbrl_export_wizard.BnbXbrlExportWizard._registry = []
+    bnb_xbrl_export_wizard.models.Model._id_seq = 1
+    return bnb_xbrl_export_wizard.BnbXbrlExportWizard
+
