@@ -1,7 +1,7 @@
 from odoo import models, fields
 import base64
 
-from ..models.declaration import FiscalDeclaration
+from ..models.belcotax import BelcotaxDeclaration as FiscalDeclaration
 
 
 class BelcotaxExportWizard(models.Model):
@@ -10,15 +10,16 @@ class BelcotaxExportWizard(models.Model):
 
     fiscal_year = fields.Char(string='Fiscal Year', required=True)
     form_type = fields.Selection([
-        ('281.10', '281.10'),
-        ('281.30', '281.30'),
+        ('281.50', '281.50'),
+        ('281.20', '281.20'),
     ], string='Form Type', required=True)
 
     def action_export(self):
         """Generate XML and return it as a downloadable URL."""
         dec = FiscalDeclaration(
             name=f'Belcotax {self.fiscal_year}',
-            declaration_type='belcotax'
+            fiscal_year=self.fiscal_year,
+            form_type=self.form_type,
         )
         xml = dec.generate_xml()
         dec.export_xml()
