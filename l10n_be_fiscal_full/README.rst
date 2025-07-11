@@ -11,6 +11,15 @@ The ``generate_xml`` method creates a simplistic XML snippet while
 intended as a starting point for a complete solution that would follow
 official specifications and integrate with Intervat, Belcotax or Biztax.
 
+BNB/CBN XBRL
+------------
+
+This version includes a lightweight example for generating corporate tax
+XBRL files. New fields ``xbrl_taxonomy`` and ``account_data`` store the
+taxonomy name and account balances in JSON. ``generate_bnb_xbrl`` produces
+a simple XBRL snippet while ``export_bnb`` marks the declaration as
+exported.
+
 Belcotax 281.x
 ---------------
 
@@ -37,3 +46,18 @@ Create and export a simple declaration programmatically::
     })
     xml = declaration.generate_xml()
     declaration.export_xml()
+
+Generate a sample BNB XBRL document::
+
+    import json
+    data = {
+        "100": 1000,
+        "101": 500,
+    }
+    declaration = self.env["be.fiscal.declaration"].create({
+        "name": "BNB", "declaration_type": "xbrl",
+        "xbrl_taxonomy": "be.bnb.test",
+        "account_data": json.dumps(data),
+    })
+    xml = declaration.generate_bnb_xbrl()
+    declaration.export_bnb()
