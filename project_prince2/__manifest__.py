@@ -5,7 +5,7 @@
     'description': 'Example addon implementing a simplified PRINCE2 workflow.',
     'author': 'Example Author, Thibault Ahn',
     'category': 'Project',
-    'depends': ['base'],
+    'depends': ['base', 'project'],
     'data': [
         'security/ir.model.access.csv',
         'views/prince2_project_views.xml',

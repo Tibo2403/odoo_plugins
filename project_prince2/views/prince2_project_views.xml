@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="name"/>
+                <field name="project_id"/>
                 <field name="state"/>
             </tree>
         </field>
@@ -19,6 +20,7 @@
                 <sheet>
                     <group>
                         <field name="name"/>
+                        <field name="project_id"/>
                         <field name="state"/>
                     </group>
                     <footer>
