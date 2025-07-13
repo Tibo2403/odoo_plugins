@@ -12,6 +12,8 @@ def test_find_anomalies_detects_unusual_moves(account_move_class):
     assert neg in result
     assert big in result
     assert ok not in result
+    assert neg.is_anomaly is True
+    assert big.is_anomaly is True
 
 
 def test_find_anomalies_uses_threshold(account_move_class):
@@ -21,3 +23,4 @@ def test_find_anomalies_uses_threshold(account_move_class):
     result = AccountMove.find_anomalies(threshold=4000)
 
     assert mid in result
+    assert mid.is_anomaly is True

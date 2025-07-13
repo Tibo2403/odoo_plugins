@@ -16,5 +16,6 @@ class AccountMove(models.Model):
         anomalies = []
         for rec in cls._registry:
             if rec.amount < 0 or rec.amount > threshold:
+                rec.is_anomaly = True
                 anomalies.append(rec)
         return anomalies
