@@ -181,3 +181,13 @@ def bnb_xbrl_export_wizard_class():
     bnb_xbrl_export_wizard.models.Model._id_seq = 1
     return bnb_xbrl_export_wizard.BnbXbrlExportWizard
 
+
+@pytest.fixture
+def prince2_project_class():
+    import importlib
+    from project_prince2.models import prince2_project
+    importlib.reload(prince2_project)
+    prince2_project.Prince2Project._registry = []
+    prince2_project.models.Model._id_seq = 1
+    return prince2_project.Prince2Project
+

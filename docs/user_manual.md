@@ -69,3 +69,17 @@ The `l10n_lu_fiscal_full` addon mirrors the Belgian example but targets Luxembou
 
 See [l10n_lu_fiscal_full/README.rst](../l10n_lu_fiscal_full/README.rst) for details.
 
+
+## Project PRINCE2
+
+`project_prince2` introduces a minimal project model that follows the
+PRINCE2 methodology.
+
+### Usage
+
+1. Open **PRINCE2 → Projects** and create a new project.
+2. Click **Advance Stage** on the form view to move the project through
+   each stage until it reaches *Closing*.
+
+See [project_prince2/README.rst](../project_prince2/README.rst) for more
+information.
