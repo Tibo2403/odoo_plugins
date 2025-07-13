@@ -5,6 +5,7 @@
     'description': 'Example module for scheduling posts and tracking basic metrics.',
     'author': 'Example Author, Thibault Ahn',
     'category': 'Marketing',
+    'icon': '/social_marketing/static/description/icon.svg',
     'depends': ['base'],
     'data': [
         'security/social_marketing_security.xml',
