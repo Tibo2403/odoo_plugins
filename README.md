@@ -7,7 +7,7 @@ This repository contains example Odoo addons.
 - `account_anomaly`: Simple addon for flagging unusual accounting moves.
 - `l10n_be_fiscal_full`: Starter module for Belgian fiscal declarations.
 - `l10n_lu_fiscal_full`: Starter module for Luxembourg fiscal declarations.
-- Make sure the scheduled action defined in [`social_marketing/data/scheduled_actions.xml`](social_marketing/data/scheduled_actions.xml) is enabled so scheduled posts are processed automatically.
+- Make sure the scheduled action defined in [`social_marketing/data/scheduled_actions.xml`](social_marketing/data/scheduled_actions.xml) is enabled so scheduled posts are processed automatically. You can enable it from **Settings \u2192 Technical \u2192 Automation \u2192 Scheduled Actions** and look for the action with XML ID `social_marketing.ir_cron_social_post`.
 
 ## User Manual
 
