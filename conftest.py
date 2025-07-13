@@ -112,6 +112,13 @@ class ResPartnerBank(Model):
     partner_id = fields_mod.Many2one('res.partner')
     acc_number = fields_mod.Char()
 
+# Minimal Project stub used for linking PRINCE2 records
+class Project(Model):
+    _name = 'project.project'
+    _description = 'Project'
+
+    name = fields_mod.Char()
+
 # Modules simulés
 models_mod = types.ModuleType('odoo.models')
 models_mod.Model = Model
@@ -126,12 +133,22 @@ res_partner_bank_mod.models = models_mod
 res_partner_bank_mod.fields = fields_mod
 res_partner_bank_mod.ResPartnerBank = ResPartnerBank
 
+project_mod = types.ModuleType('odoo.addons.project.models.project')
+project_mod.models = models_mod
+project_mod.fields = fields_mod
+project_mod.Project = Project
+sys.modules.setdefault('odoo.addons', types.ModuleType('odoo.addons'))
+sys.modules.setdefault('odoo.addons.project', types.ModuleType('project'))
+sys.modules.setdefault('odoo.addons.project.models', types.ModuleType('models'))
+sys.modules['odoo.addons.project.models'].project = project_mod
+
 # Injection dans sys.modules
 sys.modules.setdefault('odoo', odoo)
 sys.modules.setdefault('odoo.models', models_mod)
 sys.modules.setdefault('odoo.fields', fields_mod)
 sys.modules.setdefault('odoo.api', api_mod)
 sys.modules.setdefault('odoo.addons.base.models.res_partner_bank', res_partner_bank_mod)
+sys.modules.setdefault('odoo.addons.project.models.project', project_mod)
 
 # Fixtures
 @pytest.fixture
@@ -203,3 +220,11 @@ def partner_bank_class():
     res_partner_bank.ResPartnerBank._registry = []
     res_partner_bank.models.Model._id_seq = 1
     return res_partner_bank.ResPartnerBank
+
+
+@pytest.fixture
+def project_class():
+    from odoo.addons.project.models import project
+    project.Project._registry = []
+    project.models.Model._id_seq = 1
+    return project.Project

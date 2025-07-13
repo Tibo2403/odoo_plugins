@@ -9,3 +9,13 @@ def test_advance_stage_moves_until_closing(prince2_project_class):
 
     proj.advance_stage()
     assert proj.state == Project.STAGES[-1]
+
+
+def test_project_link_stores_reference(prince2_project_class, project_class):
+    Prince2 = prince2_project_class
+    Project = project_class
+
+    linked = Project(name='Standard')
+    prince2 = Prince2(name='Demo PR2', project_id=linked)
+
+    assert prince2.project_id is linked
