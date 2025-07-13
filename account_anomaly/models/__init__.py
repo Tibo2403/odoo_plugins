@@ -1,3 +1,3 @@
-from . import account_move
+from . import account_move, scanner
 
-__all__ = ["account_move"]
+__all__ = ["account_move", "scanner"]
