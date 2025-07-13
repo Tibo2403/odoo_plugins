@@ -5,6 +5,7 @@
     'description': 'Skeleton module for Luxembourg fiscal declarations.',
     'author': 'Example Author, Thibault Ahn',
     'category': 'Accounting',
+    'icon': '/l10n_lu_fiscal_full/static/description/icon.svg',
     'depends': ['base'],
     'data': [],
     'installable': True,
