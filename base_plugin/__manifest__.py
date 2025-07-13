@@ -3,7 +3,7 @@
     'version': '16.0.1.0.0',
     'summary': 'Basic plugin structure',
     'description': 'Example skeleton for an Odoo addon.',
-    'author': 'Example Author',
+    'author': 'Example Author, Thibault Ahn',
     'category': 'Tools',
     'depends': ['base'],
     'data': [

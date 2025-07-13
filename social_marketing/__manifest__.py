@@ -3,7 +3,7 @@
     'version': '16.0.1.0.1',
     'summary': 'Manage social media posts and accounts',
     'description': 'Example module for scheduling posts and tracking basic metrics.',
-    'author': 'Example Author',
+    'author': 'Example Author, Thibault Ahn',
     'category': 'Marketing',
     'depends': ['base'],
     'data': [

@@ -3,7 +3,7 @@
     'version': '16.0.1.0.0',
     'summary': 'Analyze accounting moves for anomalies',
     'description': 'Simple tools to detect unusual accounting entries.',
-    'author': 'Example Author',
+    'author': 'Example Author, Thibault Ahn',
     'category': 'Accounting',
     'depends': ['base'],
     'data': [
