@@ -2,7 +2,8 @@ Project PRINCE2
 ===============
 
 This addon provides a tiny example of managing projects using the
-PRINCE2 methodology.
+PRINCE2 methodology. It can also link each PRINCE2 record to a
+standard ``project.project`` using the *Linked Project* field.
 
 Installation
 ------------

@@ -73,7 +73,8 @@ See [l10n_lu_fiscal_full/README.rst](../l10n_lu_fiscal_full/README.rst) for deta
 ## Project PRINCE2
 
 `project_prince2` introduces a minimal project model that follows the
-PRINCE2 methodology.
+PRINCE2 methodology. Each PRINCE2 project can optionally link to a
+regular project via the *Linked Project* field.
 
 ### Usage
 
