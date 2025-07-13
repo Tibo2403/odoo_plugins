@@ -5,6 +5,7 @@
     'description': 'Simple tools to detect unusual accounting entries.',
     'author': 'Example Author, Thibault Ahn',
     'category': 'Accounting',
+    'icon': '/account_anomaly/static/description/icon.svg',
     'depends': ['base'],
     'data': [
         'security/ir.model.access.csv',

@@ -5,6 +5,7 @@
     'description': 'Example skeleton for an Odoo addon.',
     'author': 'Example Author, Thibault Ahn',
     'category': 'Tools',
+    'icon': '/base_plugin/static/description/icon.svg',
     'depends': ['base'],
     'data': [
         'security/ir.model.access.csv',
