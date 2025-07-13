@@ -16,7 +16,6 @@ class _DatetimeField(_Field):
     def now():
         return datetime.datetime.now()
 
-
 class _DateField(_Field):
     @staticmethod
     def today():
@@ -51,7 +50,6 @@ fields_mod.One2many = One2many
 api_mod = types.ModuleType('odoo.api')
 api_mod.model = lambda f: f
 
-
 def _store_args(attr):
     def decorator(*fields):
         def wrapper(func):
@@ -59,7 +57,6 @@ def _store_args(attr):
             return func
         return wrapper
     return decorator
-
 
 api_mod.depends = _store_args('_depends')
 api_mod.onchange = _store_args('_onchange')
@@ -106,6 +103,15 @@ class Model:
                 res.append(rec)
         return RecordSet(res)
 
+# Stub models
+class ResPartnerBank(Model):
+    _name = 'res.partner.bank'
+    _description = 'Bank Account'
+
+    company_id = fields_mod.Many2one('res.company')
+    partner_id = fields_mod.Many2one('res.partner')
+    acc_number = fields_mod.Char()
+
 # Modules simulés
 models_mod = types.ModuleType('odoo.models')
 models_mod.Model = Model
@@ -115,13 +121,19 @@ odoo.models = models_mod
 odoo.fields = fields_mod
 odoo.api = api_mod
 
+res_partner_bank_mod = types.ModuleType('odoo.addons.base.models.res_partner_bank')
+res_partner_bank_mod.models = models_mod
+res_partner_bank_mod.fields = fields_mod
+res_partner_bank_mod.ResPartnerBank = ResPartnerBank
+
 # Injection dans sys.modules
 sys.modules.setdefault('odoo', odoo)
 sys.modules.setdefault('odoo.models', models_mod)
 sys.modules.setdefault('odoo.fields', fields_mod)
 sys.modules.setdefault('odoo.api', api_mod)
+sys.modules.setdefault('odoo.addons.base.models.res_partner_bank', res_partner_bank_mod)
 
-
+# Fixtures
 @pytest.fixture
 def social_post_class():
     import importlib
@@ -130,7 +142,6 @@ def social_post_class():
     social_post.SocialPost._registry = []
     social_post.models.Model._id_seq = 1
     return social_post.SocialPost
-
 
 @pytest.fixture
 def account_move_class():
@@ -141,7 +152,6 @@ def account_move_class():
     account_move.models.Model._id_seq = 1
     return account_move.AccountMove
 
-
 @pytest.fixture
 def fiscal_declaration_class():
     import importlib
@@ -150,7 +160,6 @@ def fiscal_declaration_class():
     declaration.FiscalDeclaration._registry = []
     declaration.models.Model._id_seq = 1
     return declaration.FiscalDeclaration
-
 
 @pytest.fixture
 def lu_fiscal_declaration_class():
@@ -161,7 +170,6 @@ def lu_fiscal_declaration_class():
     declaration.models.Model._id_seq = 1
     return declaration.FiscalDeclaration
 
-
 @pytest.fixture
 def belcotax_export_wizard_class():
     import importlib
@@ -170,7 +178,6 @@ def belcotax_export_wizard_class():
     belcotax_export_wizard.BelcotaxExportWizard._registry = []
     belcotax_export_wizard.models.Model._id_seq = 1
     return belcotax_export_wizard.BelcotaxExportWizard
-
 
 @pytest.fixture
 def bnb_xbrl_export_wizard_class():
@@ -181,7 +188,6 @@ def bnb_xbrl_export_wizard_class():
     bnb_xbrl_export_wizard.models.Model._id_seq = 1
     return bnb_xbrl_export_wizard.BnbXbrlExportWizard
 
-
 @pytest.fixture
 def prince2_project_class():
     import importlib
@@ -191,3 +197,9 @@ def prince2_project_class():
     prince2_project.models.Model._id_seq = 1
     return prince2_project.Prince2Project
 
+@pytest.fixture
+def partner_bank_class():
+    from odoo.addons.base.models import res_partner_bank
+    res_partner_bank.ResPartnerBank._registry = []
+    res_partner_bank.models.Model._id_seq = 1
+    return res_partner_bank.ResPartnerBank

@@ -8,7 +8,7 @@ This repository contains example Odoo addons.
 - `project_prince2`: Manage projects following the PRINCE2 methodology.
 - `l10n_be_fiscal_full`: Starter module for Belgian fiscal declarations.
 - `l10n_lu_fiscal_full`: Starter module for Luxembourg fiscal declarations.
-- Make sure the scheduled action defined in [`social_marketing/data/scheduled_actions.xml`](social_marketing/data/scheduled_actions.xml) is enabled so scheduled posts are processed automatically.
+- Make sure the scheduled action defined in [`social_marketing/data/scheduled_actions.xml`](social_marketing/data/scheduled_actions.xml) is enabled so scheduled posts are processed automatically. You can enable it from **Settings \u2192 Technical \u2192 Automation \u2192 Scheduled Actions** and look for the action with XML ID `social_marketing.ir_cron_social_post`.
 
 ## User Manual
 
@@ -42,6 +42,7 @@ The `conftest.py` file provides mocked versions of `odoo.models`,
 `odoo.fields` and related modules. This fake Odoo environment allows the addons
 to be imported and tested without requiring a real Odoo server. Tests execute
 entirely within this simulated setup.
+It also defines simple stub models like `ResPartnerBank` used during testing.
 
 ### Extending `conftest.py`
 
