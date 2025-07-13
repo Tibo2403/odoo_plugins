@@ -3,7 +3,7 @@
     'version': '16.0.1.0.0',
     'summary': 'Generate Luxembourg fiscal reports and exports',
     'description': 'Skeleton module for Luxembourg fiscal declarations.',
-    'author': 'Example Author',
+    'author': 'Example Author, Thibault Ahn',
     'category': 'Accounting',
     'depends': ['base'],
     'data': [],

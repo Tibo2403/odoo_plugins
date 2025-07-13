@@ -3,7 +3,7 @@
     'version': '16.0.1.0.0',
     'summary': 'Generate Belgian fiscal reports and exports',
     'description': 'Skeleton module for Belgian fiscal declarations (TVA, Belcotax, ISOC, BNB).',
-    'author': 'Example Author',
+    'author': 'Example Author, Thibault Ahn',
     'category': 'Accounting',
     'depends': ['base'],
     'data': [
