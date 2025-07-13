@@ -41,6 +41,7 @@ The `conftest.py` file provides mocked versions of `odoo.models`,
 `odoo.fields` and related modules. This fake Odoo environment allows the addons
 to be imported and tested without requiring a real Odoo server. Tests execute
 entirely within this simulated setup.
+It also defines simple stub models like `ResPartnerBank` used during testing.
 
 ### Extending `conftest.py`
 
