@@ -133,6 +133,10 @@ res_partner_bank_mod.models = models_mod
 res_partner_bank_mod.fields = fields_mod
 res_partner_bank_mod.ResPartnerBank = ResPartnerBank
 
+sys.modules.setdefault('odoo.addons.base', types.ModuleType('base'))
+sys.modules.setdefault('odoo.addons.base.models', types.ModuleType('models'))
+sys.modules['odoo.addons.base.models'].res_partner_bank = res_partner_bank_mod
+
 project_mod = types.ModuleType('odoo.addons.project.models.project')
 project_mod.models = models_mod
 project_mod.fields = fields_mod
