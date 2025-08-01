@@ -19,6 +19,7 @@ class FiscalDeclaration(models.Model):
         ('ready', 'Ready'),
         ('exported', 'Exported')
     ], default='draft')
+    exported_date = fields.Date(string='Exported On')
     xml_content = fields.Text(string='XML Content')
     xbrl_taxonomy = fields.Char(string='XBRL Taxonomy')
     account_data = fields.Text(string='Account Mapping')
@@ -70,4 +71,5 @@ class FiscalDeclaration(models.Model):
             if rec.state != 'ready':
                 rec.generate_ecdf_xbrl()
             rec.state = 'exported'
+            rec.exported_date = fields.Date.today()
         return getattr(self, 'xml_content', None)

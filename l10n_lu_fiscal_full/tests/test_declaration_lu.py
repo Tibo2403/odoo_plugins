@@ -1,5 +1,6 @@
 import pytest
 import json
+from odoo.fields import Date
 
 
 def test_generate_xml_sets_content_and_state(lu_fiscal_declaration_class, monkeypatch):
@@ -77,3 +78,4 @@ def test_export_ecdf_generates_when_needed(lu_fiscal_declaration_class):
 
     assert dec.state == 'exported'
     assert dec.xml_content.startswith('<xbrl')
+    assert dec.exported_date == Date.today()
