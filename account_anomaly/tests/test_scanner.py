@@ -45,7 +45,7 @@ def test_scanner_detects_missing_export_date(fiscal_declaration_class, lu_fiscal
     LUDecl = lu_fiscal_declaration_class
 
     be = BEDecl(name='BE', declaration_type='vat', state='exported', exported_date=None)
-    lu = LUDecl(name='LU', declaration_type='vat', state='exported')
+    lu = LUDecl(name='LU', declaration_type='vat', state='exported', exported_date=None)
 
     Scanner = get_scanner()
     issues = Scanner.scan_all()
