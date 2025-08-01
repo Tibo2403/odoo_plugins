@@ -1,7 +1,10 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 import json
-from xml.etree.ElementTree import Element, SubElement, tostring
+try:
+    from lxml import etree as ET  # type: ignore
+except Exception:  # pragma: no cover - fallback when lxml isn't installed
+    import xml.etree.ElementTree as ET  # noqa: N818
 
 
 class FiscalDeclaration(models.Model):
@@ -71,40 +74,40 @@ class FiscalDeclaration(models.Model):
         """Generate an XML representation for the declaration."""
         for rec in self._iterate():
             if rec.declaration_type == 'vat':
-                root = Element('VATDeclaration')
+                root = ET.Element('VATDeclaration')
                 period_type = rec.__dict__.get('period_type', '')
-                SubElement(root, 'PeriodType').text = period_type or ''
+                ET.SubElement(root, 'PeriodType').text = period_type or ''
                 if period_type == 'month':
                     month = rec.__dict__.get('period_month', '')
-                    SubElement(root, 'Month').text = month or ''
+                    ET.SubElement(root, 'Month').text = month or ''
                 else:
                     quarter = rec.__dict__.get('period_quarter', '')
-                    SubElement(root, 'Quarter').text = quarter or ''
-                SubElement(root, 'VatCode00').text = str(rec.__dict__.get('vat_code_00', 0) or 0)
-                SubElement(root, 'VatCode01').text = str(rec.__dict__.get('vat_code_01', 0) or 0)
-                SubElement(root, 'VatCode54').text = str(rec.__dict__.get('vat_code_54', 0) or 0)
-                SubElement(root, 'IntraEUSales').text = str(rec.__dict__.get('intra_eu_sales', 0) or 0)
-                SubElement(root, 'IntraEUPurchases').text = str(rec.__dict__.get('intra_eu_purchases', 0) or 0)
-                SubElement(root, 'ExemptSales').text = str(rec.__dict__.get('exempt_sales', 0) or 0)
-                rec.xml_content = tostring(root, encoding='unicode')
+                    ET.SubElement(root, 'Quarter').text = quarter or ''
+                ET.SubElement(root, 'VatCode00').text = str(rec.__dict__.get('vat_code_00', 0) or 0)
+                ET.SubElement(root, 'VatCode01').text = str(rec.__dict__.get('vat_code_01', 0) or 0)
+                ET.SubElement(root, 'VatCode54').text = str(rec.__dict__.get('vat_code_54', 0) or 0)
+                ET.SubElement(root, 'IntraEUSales').text = str(rec.__dict__.get('intra_eu_sales', 0) or 0)
+                ET.SubElement(root, 'IntraEUPurchases').text = str(rec.__dict__.get('intra_eu_purchases', 0) or 0)
+                ET.SubElement(root, 'ExemptSales').text = str(rec.__dict__.get('exempt_sales', 0) or 0)
+                rec.xml_content = ET.tostring(root, encoding='unicode')
             elif rec.declaration_type == 'belcotax':
-                lines_xml = ''
+                root = ET.Element('declaration', type=rec.declaration_type, name=rec.name)
                 for line in getattr(rec, 'belcotax_line_ids', []):
                     vat = line.get_partner_vat()
                     addr = line.get_partner_address()
                     partner_name = getattr(line.partner_id, 'name', '')
-                    lines_xml += (
-                        f"<line partner='{partner_name}' vat='{vat}' "
-                        f"address='{addr}' amount='{line.amount}'/>"
+                    ET.SubElement(
+                        root,
+                        'line',
+                        partner=partner_name,
+                        vat=vat,
+                        address=addr,
+                        amount=str(line.amount),
                     )
-                rec.xml_content = (
-                    f"<declaration type='{rec.declaration_type}' name='{rec.name}'>"
-                    f"{lines_xml}</declaration>"
-                )
+                rec.xml_content = ET.tostring(root, encoding='unicode')
             else:
-                rec.xml_content = (
-                    f"<declaration type='{rec.declaration_type}' name='{rec.name}'/>"
-                )
+                root = ET.Element('declaration', type=rec.declaration_type, name=rec.name)
+                rec.xml_content = ET.tostring(root, encoding='unicode')
             rec.state = 'ready'
         return getattr(self, 'xml_content', None)
 
@@ -127,13 +130,16 @@ class FiscalDeclaration(models.Model):
                     mapping = json.loads(value)
                 except ValueError:
                     mapping = {}
-            accounts = ''.join(
-                f"<account code='{code}' balance='{balance}'/>"
-                for code, balance in mapping.items()
-            )
-            rec.xml_content = (
-                f"<xbrl taxonomy='{rec.xbrl_taxonomy or ''}'>{accounts}</xbrl>"
-            )
+            taxonomy = rec.__dict__.get('xbrl_taxonomy', '') or ''
+            root = ET.Element('xbrl', taxonomy=str(taxonomy))
+            for code, balance in mapping.items():
+                ET.SubElement(
+                    root,
+                    'account',
+                    code=str(code),
+                    balance=str(balance),
+                )
+            rec.xml_content = ET.tostring(root, encoding='unicode')
             rec.state = 'ready'
         return getattr(self, 'xml_content', None)
 

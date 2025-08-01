@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="VATDeclaration">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="PeriodType" type="xs:string" minOccurs="0"/>
+        <xs:element name="Month" type="xs:string" minOccurs="0"/>
+        <xs:element name="Quarter" type="xs:string" minOccurs="0"/>
+        <xs:element name="VatCode00" type="xs:decimal"/>
+        <xs:element name="VatCode01" type="xs:decimal"/>
+        <xs:element name="VatCode54" type="xs:decimal"/>
+        <xs:element name="IntraEUSales" type="xs:decimal"/>
+        <xs:element name="IntraEUPurchases" type="xs:decimal"/>
+        <xs:element name="ExemptSales" type="xs:decimal"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
