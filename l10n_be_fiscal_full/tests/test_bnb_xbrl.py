@@ -15,7 +15,7 @@ def test_generate_bnb_xbrl_uses_account_data(fiscal_declaration_class):
     xml = dec.generate_bnb_xbrl()
 
     assert xml.startswith('<xbrl')
-    assert "account code='100'" in xml
+    assert 'account code="100"' in xml
     assert dec.state == 'ready'
 
 
