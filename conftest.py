@@ -151,6 +151,11 @@ sys.modules.setdefault('odoo', odoo)
 sys.modules.setdefault('odoo.models', models_mod)
 sys.modules.setdefault('odoo.fields', fields_mod)
 sys.modules.setdefault('odoo.api', api_mod)
+exceptions_mod = types.ModuleType('odoo.exceptions')
+class ValidationError(Exception):
+    pass
+exceptions_mod.ValidationError = ValidationError
+sys.modules.setdefault('odoo.exceptions', exceptions_mod)
 sys.modules.setdefault('odoo.addons.base.models.res_partner_bank', res_partner_bank_mod)
 sys.modules.setdefault('odoo.addons.project.models.project', project_mod)
 

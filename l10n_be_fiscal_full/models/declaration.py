@@ -1,4 +1,5 @@
-from odoo import models, fields
+from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 import json
 from xml.etree.ElementTree import Element, SubElement, tostring
 
@@ -45,6 +46,22 @@ class FiscalDeclaration(models.Model):
         [('Q1', 'Q1'), ('Q2', 'Q2'), ('Q3', 'Q3'), ('Q4', 'Q4')],
         string='Quarter'
     )
+
+    @api.constrains(
+        'vat_code_00', 'vat_code_01', 'vat_code_54',
+        'intra_eu_sales', 'intra_eu_purchases', 'exempt_sales'
+    )
+    def _check_positive_values(self):
+        for rec in self._iterate():
+            for field_name in [
+                'vat_code_00', 'vat_code_01', 'vat_code_54',
+                'intra_eu_sales', 'intra_eu_purchases', 'exempt_sales',
+            ]:
+                value = getattr(rec, field_name, 0)
+                if value is not None and value < 0:
+                    raise ValidationError(
+                        f"{field_name} must be a positive number"
+                    )
 
     def _iterate(self):
         """Return a list of records for uniform iteration."""

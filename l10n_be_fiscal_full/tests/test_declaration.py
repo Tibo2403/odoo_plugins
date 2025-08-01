@@ -1,5 +1,6 @@
 import pytest
 from odoo.fields import Date
+from odoo.exceptions import ValidationError
 
 
 def test_generate_xml_sets_content_and_state(fiscal_declaration_class, monkeypatch):
@@ -53,3 +54,16 @@ def test_generate_and_export_on_list(fiscal_declaration_class):
     assert dec2.xml_content.startswith('<declaration')
     assert dec1.exported_date == Date.today()
     assert dec2.exported_date == Date.today()
+
+
+def test_negative_values_raise_validation_error(fiscal_declaration_class):
+    FiscalDeclaration = fiscal_declaration_class
+
+    dec = FiscalDeclaration(
+        name='Q1 VAT',
+        declaration_type='vat',
+        vat_code_00=-5,
+    )
+
+    with pytest.raises(ValidationError):
+        dec._check_positive_values()
