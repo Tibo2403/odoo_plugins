@@ -43,6 +43,7 @@ class FiscalDeclaration(models.Model):
             if rec.state != 'ready':
                 rec.generate_xml()
             rec.state = 'exported'
+            rec.exported_date = fields.Date.today()
         return getattr(self, 'xml_content', None)
 
     def generate_ecdf_xbrl(self):
