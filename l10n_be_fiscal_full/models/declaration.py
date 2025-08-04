@@ -70,25 +70,50 @@ class FiscalDeclaration(models.Model):
         """Return a list of records for uniform iteration."""
         return self if isinstance(self, (list, tuple)) else [self]
 
+    @staticmethod
+    def _safe_getattr(record, name, default):
+        """Retrieve ``name`` from ``record`` using ``getattr`` and fall back
+        to ``default`` when the fetched value corresponds to an Odoo field
+        descriptor. This mirrors the previous ``record.__dict__.get`` usage
+        without directly touching ``__dict__``.
+        """
+        value = getattr(record, name, default)
+        field_types = (
+            fields.Char,
+            fields.Selection,
+            fields.Float,
+            fields.Text,
+            fields.Many2one,
+            fields.Many2many,
+            fields.One2many,
+            fields.Datetime,
+            fields.Date,
+            fields.Integer,
+            fields.Boolean,
+        )
+        if isinstance(value, field_types):
+            return default
+        return value
+
     def generate_xml(self):
         """Generate an XML representation for the declaration."""
         for rec in self._iterate():
             if rec.declaration_type == 'vat':
                 root = ET.Element('VATDeclaration')
-                period_type = rec.__dict__.get('period_type', '')
+                period_type = type(rec)._safe_getattr(rec, 'period_type', '')
                 ET.SubElement(root, 'PeriodType').text = period_type or ''
                 if period_type == 'month':
-                    month = rec.__dict__.get('period_month', '')
+                    month = type(rec)._safe_getattr(rec, 'period_month', '')
                     ET.SubElement(root, 'Month').text = month or ''
                 else:
-                    quarter = rec.__dict__.get('period_quarter', '')
+                    quarter = type(rec)._safe_getattr(rec, 'period_quarter', '')
                     ET.SubElement(root, 'Quarter').text = quarter or ''
-                ET.SubElement(root, 'VatCode00').text = str(rec.__dict__.get('vat_code_00', 0) or 0)
-                ET.SubElement(root, 'VatCode01').text = str(rec.__dict__.get('vat_code_01', 0) or 0)
-                ET.SubElement(root, 'VatCode54').text = str(rec.__dict__.get('vat_code_54', 0) or 0)
-                ET.SubElement(root, 'IntraEUSales').text = str(rec.__dict__.get('intra_eu_sales', 0) or 0)
-                ET.SubElement(root, 'IntraEUPurchases').text = str(rec.__dict__.get('intra_eu_purchases', 0) or 0)
-                ET.SubElement(root, 'ExemptSales').text = str(rec.__dict__.get('exempt_sales', 0) or 0)
+                ET.SubElement(root, 'VatCode00').text = str(type(rec)._safe_getattr(rec, 'vat_code_00', 0) or 0)
+                ET.SubElement(root, 'VatCode01').text = str(type(rec)._safe_getattr(rec, 'vat_code_01', 0) or 0)
+                ET.SubElement(root, 'VatCode54').text = str(type(rec)._safe_getattr(rec, 'vat_code_54', 0) or 0)
+                ET.SubElement(root, 'IntraEUSales').text = str(type(rec)._safe_getattr(rec, 'intra_eu_sales', 0) or 0)
+                ET.SubElement(root, 'IntraEUPurchases').text = str(type(rec)._safe_getattr(rec, 'intra_eu_purchases', 0) or 0)
+                ET.SubElement(root, 'ExemptSales').text = str(type(rec)._safe_getattr(rec, 'exempt_sales', 0) or 0)
                 rec.xml_content = ET.tostring(root, encoding='unicode')
             elif rec.declaration_type == 'belcotax':
                 root = ET.Element('declaration', type=rec.declaration_type, name=rec.name)
@@ -130,7 +155,7 @@ class FiscalDeclaration(models.Model):
                     mapping = json.loads(value)
                 except ValueError:
                     mapping = {}
-            taxonomy = rec.__dict__.get('xbrl_taxonomy', '') or ''
+            taxonomy = type(rec)._safe_getattr(rec, 'xbrl_taxonomy', '') or ''
             root = ET.Element('xbrl', taxonomy=str(taxonomy))
             for code, balance in mapping.items():
                 ET.SubElement(
