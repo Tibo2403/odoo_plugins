@@ -1,7 +1,7 @@
 import datetime
 
 
-def test_run_scheduled_posts_posts_due_items(social_post_class, monkeypatch):
+def test_run_scheduled_posts_posts_due_items(social_post_class):
     SocialPost = social_post_class
 
     post = SocialPost(
@@ -12,18 +12,17 @@ def test_run_scheduled_posts_posts_due_items(social_post_class, monkeypatch):
         state='scheduled',
         stats_impressions=0,
         stats_clicks=0,
+        company_id=1,
     )
 
-    monkeypatch.setattr(SocialPost, 'search', lambda self, domain: [post], raising=False)
-
-    SocialPost().run_scheduled_posts()
+    SocialPost.run_scheduled_posts(SocialPost)
 
     assert post.state == 'posted'
     assert post.stats_impressions == 1
     assert post.stats_clicks == 1
 
 
-def test_run_scheduled_posts_ignores_future_items(social_post_class, monkeypatch):
+def test_run_scheduled_posts_ignores_future_items(social_post_class):
     SocialPost = social_post_class
 
     post = SocialPost(
@@ -34,11 +33,10 @@ def test_run_scheduled_posts_ignores_future_items(social_post_class, monkeypatch
         state='scheduled',
         stats_impressions=0,
         stats_clicks=0,
+        company_id=1,
     )
 
-    monkeypatch.setattr(SocialPost, 'search', lambda self, domain: [post], raising=False)
-
-    SocialPost().run_scheduled_posts()
+    SocialPost.run_scheduled_posts(SocialPost)
 
     assert post.state == 'scheduled'
     assert post.stats_impressions == 0

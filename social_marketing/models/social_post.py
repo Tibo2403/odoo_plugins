@@ -44,22 +44,14 @@ class SocialPost(models.Model):
         company. All matching records are then published via
         :meth:`post_now`.
         """
+        now = fields.Datetime.now()
         domain = [
             ('state', '=', 'scheduled'),
-            ('scheduled_date', '<=', fields.Datetime.now()),
+            ('scheduled_date', '<=', now),
         ]
         if getattr(self, 'env', None):
             domain.append(('company_id', '=', self.env.company.id))
 
         posts = self.search(domain)
-
-        if hasattr(posts, 'post_now'):
-            posts.post_now()
-        else:
-            now = fields.Datetime.now()
-            filtered = [
-                p for p in posts
-                if p.state == 'scheduled' and p.scheduled_date <= now
-            ]
-            self.__class__.post_now(filtered)
+        posts.post_now()
 
