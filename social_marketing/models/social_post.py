@@ -19,8 +19,8 @@ class SocialPost(models.Model):
         ('scheduled', 'Scheduled'),
         ('posted', 'Posted')
     ], default='draft')
-    stats_impressions = fields.Integer(string='Impressions')
-    stats_clicks = fields.Integer(string='Clicks')
+    stats_impressions = fields.Integer(string='Impressions', default=0)
+    stats_clicks = fields.Integer(string='Clicks', default=0)
     company_id = fields.Many2one('res.company', required=True,
                                  default=lambda self: self.env.company)
 
