@@ -48,10 +48,8 @@ class SocialPost(models.Model):
         domain = [
             ('state', '=', 'scheduled'),
             ('scheduled_date', '<=', now),
+            ('company_id', '=', self.env.company.id),
         ]
-        if getattr(self, 'env', None):
-            domain.append(('company_id', '=', self.env.company.id))
-
         posts = self.search(domain)
         posts.post_now()
-
+        return len(posts)
