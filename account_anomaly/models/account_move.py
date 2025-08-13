@@ -13,8 +13,9 @@ class AccountMove(models.Model):
     @classmethod
     def find_anomalies(cls, threshold=10000.0):
         """Return moves with negative amounts or exceeding ``threshold``."""
+        records = cls.search([])
         anomalies = []
-        for rec in cls._registry:
+        for rec in records:
             if rec.amount < 0 or rec.amount > threshold:
                 rec.is_anomaly = True
                 anomalies.append(rec)

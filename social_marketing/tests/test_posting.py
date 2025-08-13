@@ -15,8 +15,9 @@ def test_run_scheduled_posts_posts_due_items(social_post_class):
         company_id=1,
     )
 
-    SocialPost.run_scheduled_posts(SocialPost)
+    count = SocialPost.run_scheduled_posts(SocialPost)
 
+    assert count == 1
     assert post.state == 'posted'
     assert post.stats_impressions == 1
     assert post.stats_clicks == 1
@@ -36,8 +37,9 @@ def test_run_scheduled_posts_ignores_future_items(social_post_class):
         company_id=1,
     )
 
-    SocialPost.run_scheduled_posts(SocialPost)
+    count = SocialPost.run_scheduled_posts(SocialPost)
 
+    assert count == 0
     assert post.state == 'scheduled'
     assert post.stats_impressions == 0
     assert post.stats_clicks == 0

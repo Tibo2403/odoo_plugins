@@ -1,4 +1,5 @@
 from odoo import models, fields
+from odoo.exceptions import ValidationError
 
 
 class Prince2Project(models.Model):
@@ -35,3 +36,5 @@ class Prince2Project(models.Model):
             idx = stages.index(project.state)
             if idx < len(stages) - 1:
                 project.state = stages[idx + 1]
+            else:
+                raise ValidationError("Project already at final stage")

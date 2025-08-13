@@ -1,4 +1,9 @@
+import logging
+
 from odoo import models, fields
+
+
+_logger = logging.getLogger(__name__)
 
 
 class AnomalyScanner(models.Model):
@@ -29,8 +34,9 @@ class AnomalyScanner(models.Model):
                         'acc_number': num,
                         'ids': [r.id for r in recs],
                     })
-        except Exception:
-            pass
+        except Exception as exc:
+            _logger.exception("Bank account scan failed")
+            issues.append({'model': 'res.partner.bank', 'error': str(exc)})
 
         # Scheduled posts still pending in the past
         try:
@@ -44,8 +50,9 @@ class AnomalyScanner(models.Model):
                         'issue': 'overdue_post',
                         'id': post.id,
                     })
-        except Exception:
-            pass
+        except Exception as exc:
+            _logger.exception("Scheduled post scan failed")
+            issues.append({'model': 'social.marketing.post', 'error': str(exc)})
 
         # Exported declarations missing exported_date
         decl_sources = [
@@ -57,7 +64,9 @@ class AnomalyScanner(models.Model):
             try:
                 module = __import__(module_name, fromlist=[cls_name])
                 Cls = getattr(module, cls_name)
-            except Exception:
+            except Exception as exc:
+                _logger.exception("Importing %s failed", module_name)
+                issues.append({'model': module_name, 'error': str(exc)})
                 continue
             for rec in Cls._registry:
                 if getattr(rec, 'state', None) == 'exported' and not getattr(rec, 'exported_date', None):

@@ -1,4 +1,8 @@
 
+import pytest
+from odoo.exceptions import ValidationError
+
+
 def test_advance_stage_moves_until_closing(prince2_project_class):
     Project = prince2_project_class
     proj = Project(name='Demo')
@@ -7,8 +11,9 @@ def test_advance_stage_moves_until_closing(prince2_project_class):
         proj.advance_stage()
         assert proj.state == stage
 
-    proj.advance_stage()
     assert proj.state == Project.STAGES[-1]
+    with pytest.raises(ValidationError):
+        proj.advance_stage()
 
 
 def test_project_link_stores_reference(prince2_project_class, project_class):

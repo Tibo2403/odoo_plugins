@@ -3,10 +3,10 @@ import types
 import datetime
 import pytest
 
-# Crée un module simulé "odoo"
+# Create a simulated "odoo" module
 odoo = types.ModuleType('odoo')
 
-# Champs simulés
+# Simulated field base class
 class _Field:
     def __init__(self, *args, **kwargs):
         pass
@@ -21,7 +21,7 @@ class _DateField(_Field):
     def today():
         return datetime.date.today()
 
-# Champs typés pour compatibilité avec Odoo
+# Typed fields for Odoo compatibility
 class Char(_Field): pass
 class Many2one(_Field): pass
 class Text(_Field): pass
@@ -32,7 +32,7 @@ class Float(_Field): pass
 class Many2many(_Field): pass
 class One2many(_Field): pass
 
-# Enveloppe fields
+# Wrapper module for fields
 fields_mod = types.ModuleType('odoo.fields')
 fields_mod.Char = Char
 fields_mod.Many2one = Many2one
@@ -46,7 +46,7 @@ fields_mod.Float = Float
 fields_mod.Many2many = Many2many
 fields_mod.One2many = One2many
 
-# Décorateurs API simulés
+# Simulated API decorators
 api_mod = types.ModuleType('odoo.api')
 api_mod.model = lambda f: f
 
@@ -63,7 +63,7 @@ api_mod.onchange = _store_args('_onchange')
 api_mod.constrains = _store_args('_constrains')
 api_mod.model_create_multi = lambda f: f
 
-# RecordSet simulé (comme un ORM Odoo)
+# RecordSet simulation similar to the Odoo ORM
 class RecordSet(list):
     def __getattr__(self, item):
         def wrapper(*args, **kwargs):
@@ -73,7 +73,7 @@ class RecordSet(list):
             return method(self, *args, **kwargs)
         return wrapper
 
-# Classe Model simulée avec registre et environnement simulé
+# Simulated Model class with registry and environment
 class Model:
     _registry = []
     _id_seq = 1
@@ -119,11 +119,11 @@ class Project(Model):
 
     name = fields_mod.Char()
 
-# Modules simulés
+# Simulated modules
 models_mod = types.ModuleType('odoo.models')
 models_mod.Model = Model
 
-# Assemble le module odoo
+# Assemble the mocked odoo module
 odoo.models = models_mod
 odoo.fields = fields_mod
 odoo.api = api_mod
@@ -146,7 +146,7 @@ sys.modules.setdefault('odoo.addons.project', types.ModuleType('project'))
 sys.modules.setdefault('odoo.addons.project.models', types.ModuleType('models'))
 sys.modules['odoo.addons.project.models'].project = project_mod
 
-# Injection dans sys.modules
+# Inject into sys.modules
 sys.modules.setdefault('odoo', odoo)
 sys.modules.setdefault('odoo.models', models_mod)
 sys.modules.setdefault('odoo.fields', fields_mod)
