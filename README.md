@@ -3,12 +3,12 @@
 This repository contains example Odoo addons.
 
 - `base_plugin`: Minimal plugin demonstrating the basic structure of an Odoo module.
-- `social_marketing`: Example plugin for managing social media accounts and posts with scheduling and basic tracking.
+- `social_marketing`: Example plugin for managing social media accounts and posts with scheduling, workflow validation, automatic cron publishing, and basic tracking.
 - `account_anomaly`: Simple addon for flagging unusual accounting moves.
 - `project_prince2`: Manage projects following the PRINCE2 methodology.
 - `l10n_be_fiscal_full`: Starter module for Belgian fiscal declarations.
 - `l10n_lu_fiscal_full`: Starter module for Luxembourg fiscal declarations.
-- Make sure the scheduled action defined in [`social_marketing/data/scheduled_actions.xml`](social_marketing/data/scheduled_actions.xml) is enabled so scheduled posts are processed automatically. You can enable it from **Settings \u2192 Technical \u2192 Automation \u2192 Scheduled Actions** and look for the action with XML ID `social_marketing.ir_cron_social_post`.
+- Make sure the scheduled action defined in [`social_marketing/data/scheduled_actions.xml`](social_marketing/data/scheduled_actions.xml) is enabled so scheduled posts are processed automatically. You can enable it from **Settings → Technical → Automation → Scheduled Actions** and look for the action with XML ID `social_marketing.ir_cron_social_post`.
 
 ## User Manual
 
@@ -21,6 +21,18 @@ For detailed installation and usage instructions, see the [user manual](docs/use
 3. Install the desired addon from the Apps menu.
 
 These addons require **Odoo&nbsp;16** for compatibility. See [`social_marketing/__manifest__.py`](social_marketing/__manifest__.py) and [`account_anomaly/__manifest__.py`](account_anomaly/__manifest__.py) for additional module metadata.
+
+## Social Marketing workflow
+
+The `social_marketing` addon includes a simple but safer workflow:
+
+- draft posts can be scheduled only when a scheduled date is set;
+- scheduled posts are automatically published by the cron when their date is reached;
+- cancelled posts cannot be published;
+- published posts cannot be cancelled or scheduled again;
+- access rights are limited to internal users through `base.group_user`.
+
+For production use, connect `action_publish()` to a dedicated social network connector/service before marking external posts as published.
 
 ## Running tests
 
